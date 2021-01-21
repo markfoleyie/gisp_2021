@@ -10,6 +10,9 @@ psycopg2 = "*"
 pyproj = "*"
 shapely = "*"
 fiona = "*"
+requests = "*"
+geopy = "*"
+pygdal = "==2.2.2.*"
 
 [requires]
 python_version = "3.8"
