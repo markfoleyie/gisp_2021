@@ -25,4 +25,4 @@ try:
     print("Didn't see any import errors")
 
 except Exception as e:
-    print("{}".format(e))
+    print(f"{e}")
