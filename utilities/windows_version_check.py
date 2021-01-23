@@ -83,6 +83,15 @@ def run_check():
             for line in fh:
                 print(f"pip install {line}", end="")
 
+        # Check file existence
+        print("\nI'm now going to check whether the libraries exist on this computer...", end="\n")
+        with open(temp_file, "r") as fh:
+            for line in fh:
+                if file_exists(line.strip()):
+                    print(f"{line.strip()} exists.")
+                else:
+                    print(f"{line.strip()} does NOT exist (at least not in {DOWNLOADS_DIRECTORY}).")
+
     except Exception as e:
         print(f"Something bad happened!\n{e}")
         quit(1)
@@ -160,6 +169,13 @@ def make_temp_dir(temp_name):
         os.mkdir(cache_dir)
 
     return cache_dir
+
+
+def file_exists(path):
+    if os.path.exists(path):
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":
