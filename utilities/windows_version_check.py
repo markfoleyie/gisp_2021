@@ -78,7 +78,7 @@ def run_check():
 
         # Instructions for each library
         print("\nRun the following commands in Terminal (assuming that you have downloaded the files in a standard "
-              "way and they exist in your Downloads directory:\n")
+              "way and they exist in your Downloads directory):\n")
         with open(temp_file, "r") as fh:
             for line in fh:
                 print(f"pip install {line}", end="")
@@ -87,7 +87,7 @@ def run_check():
         print("\nI'm now going to check whether the libraries exist on this computer...", end="\n")
         with open(temp_file, "r") as fh:
             for line in fh:
-                if file_exists(line.strip()):
+                if os.path.exists(line.strip()):
                     print(f"{line.strip()} exists.")
                 else:
                     print(f"{line.strip()} does NOT exist (at least not in {DOWNLOADS_DIRECTORY}).")
@@ -169,13 +169,6 @@ def make_temp_dir(temp_name):
         os.mkdir(cache_dir)
 
     return cache_dir
-
-
-def file_exists(path):
-    if os.path.exists(path):
-        return True
-    else:
-        return False
 
 
 if __name__ == "__main__":
