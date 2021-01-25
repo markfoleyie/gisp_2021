@@ -11,7 +11,7 @@ INSTRUCTIONS FOR MS WINDOWS USERS
 You should download THIS file to your project directory and import it as the first import in every GIS program that you
 write. This will, hopefully, ensure a relatively painless experience when doing programming for GIS.
 
-I also recommend that you use Python 3.8 for the moment as I have tested the setup process with this version.
+I also recommend that you use Python 3.6 for the moment as I have tested the setup process with this version.
 In the following examples I've given Win32 and AMD64 examples. Most modern computers will use the AMD64
 version but if you get an error reporting an "unsupported wheel format" or similar, try the Win32 version.
 It is almost impossible to predict in advance as computers vary widely.

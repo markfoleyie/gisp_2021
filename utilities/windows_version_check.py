@@ -31,13 +31,21 @@ def run_check():
 
     # Current libraries and their versions
     LIBRARIES = {
-        "GDAL": "3.2.1",
-        "Fiona": "1.8.18",
+        "GDAL": "3.0.4",
+        "Fiona": "1.8.13",
         "Shapely": "1.7.1",
         "pyproj": "3.0.0.post1"
     }
+    OTHER_PACKAGES = (
+        "requests",
+        "psycopg2"
+    )
 
     try:
+        # Download some 'standard' libraries using pip
+        for package in OTHER_PACKAGES:
+            install_package(package)
+
         # Find out where your Downloads directory is
         DOWNLOADS_DIRECTORY = get_downloads_folder()
 
@@ -50,6 +58,9 @@ def run_check():
             pass
 
         # Figure out your Python version
+        print(f"You are running Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+        if sys.version_info.minor != 6:
+            print(f"You should make sure that you are running Python 3.6.x where x is anything.\n")
         python_ver = f"cp{sys.version_info.major}{sys.version_info.minor}"
         python_ver_modifier = "" if sys.version_info.minor > 7 else "m"
 
@@ -65,7 +76,7 @@ def run_check():
         print(f"Looks like you're running {struct.calcsize('P') * 8}-bit MS Windows\n"
               f"Go to {WIN_BINARIES_DIR} and download:")
         for k, v in LIBRARIES.items():
-            item = f"{k}-{v}-{python_ver}{python_ver_modifier}-{win_bit}.whl"
+            item = f"{k}-{v}-{python_ver}-{python_ver}{python_ver_modifier}-{win_bit}.whl"
             print(f"   {item}")
 
             # # These are not working at the moment due to limitations on the UCI site.
@@ -74,7 +85,7 @@ def run_check():
 
             # Update the temp file with customised locations for the libraries. Use this to feed 'pip install'.
             with open(temp_file, "a+") as fh:
-                fh.write(f"{DOWNLOADS_DIRECTORY}/{item}\n")
+                fh.write(f"{DOWNLOADS_DIRECTORY}\{item}\n")
 
         # Instructions for each library
         print("\nRun the following commands in Terminal (assuming that you have downloaded the files in a standard "
