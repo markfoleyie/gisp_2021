@@ -42,10 +42,6 @@ def run_check():
     )
 
     try:
-        # Download some 'standard' libraries using pip
-        for package in OTHER_PACKAGES:
-            install_package(package)
-
         # Find out where your Downloads directory is
         DOWNLOADS_DIRECTORY = get_downloads_folder()
 
@@ -53,9 +49,10 @@ def run_check():
         temp_dir = make_temp_dir("temp")
         temp_file = f"{temp_dir}/{TEMP_FILE}"
 
-        # Create (open and close) temp file
+        # Create (open and close) temp file. Also include "standard" packages
         with open(temp_file, "w") as fh:
-            pass
+            for package in OTHER_PACKAGES:
+                fh.write(f"{package}\n")
 
         # Figure out your Python version
         print(f"You are running Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
@@ -88,21 +85,29 @@ def run_check():
             with open(temp_file, "a+") as fh:
                 fh.write(f"{DOWNLOADS_DIRECTORY}\{item}\n")
 
-        # Instructions for each library
-        print("\nRun the following commands in Terminal (assuming that you have downloaded the files in a standard "
-              "way and they exist in your Downloads directory):\n")
-        with open(temp_file, "r") as fh:
-            for line in fh:
-                print(f"pip install {line}", end="")
+        # # Instructions for each library
+        # print("\nRun the following commands in Terminal (assuming that you have downloaded the files in a standard "
+        #       "way and they exist in your Downloads directory):\n")
+        # with open(temp_file, "r") as fh:
+        #     for line in fh:
+        #         print(f"pip install {line}", end="")
 
         # Check file existence
         print("\nI'm now going to check whether the libraries exist on this computer...", end="\n")
         with open(temp_file, "r") as fh:
             for line in fh:
-                if os.path.exists(line.strip()):
-                    print(f"{line.strip()} exists.")
-                else:
-                    print(f"{line.strip()} does NOT exist (at least not in {DOWNLOADS_DIRECTORY}).")
+                if line[1] == ":":
+                    if os.path.exists(line.strip()):
+                        print(f"{line.strip()} exists.")
+                    else:
+                        print(f"{line.strip()} does NOT exist (at least not in {DOWNLOADS_DIRECTORY}).")
+
+        # Installation instructions
+        print(f"Make sure that you have downloaded the libraries indicated above.\n"
+              f"Run this command in Terminal...\n"
+              f"pip install -r {temp_dir}\{TEMP_FILE}")
+
+
 
     except Exception as e:
         print(f"Something bad happened!\n{e}")
