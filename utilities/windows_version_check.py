@@ -61,6 +61,7 @@ def run_check():
         print(f"You are running Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
         if sys.version_info.minor != 6:
             print(f"You should make sure that you are running Python 3.6.x where x is anything.\n")
+            quit(0)
         python_ver = f"cp{sys.version_info.major}{sys.version_info.minor}"
         python_ver_modifier = "" if sys.version_info.minor > 7 else "m"
 
