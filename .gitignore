@@ -228,3 +228,4 @@ cython_debug/
 
 .idea/
 utilities/.temp
+.temp_data
