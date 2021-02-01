@@ -12,11 +12,10 @@ northing = 250000
 transformer = pyproj.Transformer.from_crs(4326, 29903, always_xy=True)
 
 # Apply the ntransformation
-x,y = transformer.transform(lon, lat)
+x, y = transformer.transform(lon, lat)
 print(f"Turned Lat: {lat}, Lon: {lon} into IG Easting: {x}, Northing: {y}")
 
 # Do the same, except in the opposite direction, i.e 29903 -> 4326
 transformer = pyproj.Transformer.from_crs(29903, 4326, always_xy=True)
-x,y = transformer.transform(easting, northing)
+x, y = transformer.transform(easting, northing)
 print(f"Turned IG Easting: {easting}, Northing: {northing} into Lon: {x}, Lat: {y}")
-

@@ -42,6 +42,3 @@ with fiona.open(SOURCE) as source:
             # We can then compare the feature we've just made with the 'search feature' that we got from the earlier
             # process/ We do a shapely 'touches' computation and if we get a hit (True) then we print its name.
             print(feature["properties"][SEARCH_PROPERTY])
-
-
-

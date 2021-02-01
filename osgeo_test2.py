@@ -1,4 +1,5 @@
 import osgeo.ogr
+import utilities.gdal_workaround
 
 shapefile = osgeo.ogr.Open(".temp_data/counties.shp")
 layer = shapefile.GetLayer(0)

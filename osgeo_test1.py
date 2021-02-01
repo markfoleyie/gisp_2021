@@ -1,4 +1,5 @@
 # from gdal import ogr
+import utilities.gdal_workaround
 import osgeo.ogr as ogr
 shapefile = ogr.Open(".temp_data/counties.shp")
 numLayers = shapefile.GetLayerCount()
