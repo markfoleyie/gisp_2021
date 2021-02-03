@@ -105,7 +105,7 @@ def run_check():
         # Installation instructions
         print(f"Make sure that you have downloaded the libraries indicated above.\n"
               f"Run this command in Terminal...\n"
-              f"pip install -r {temp_dir}\{TEMP_FILE}")
+              f"pip install -r {temp_file}")
 
 
 
