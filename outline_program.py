@@ -3,8 +3,8 @@ Always start with a 'triple quote string'. This ends up in a special variable ca
 title, description of the program, its inputs and outputs and any other 'metadata' such as author, date, version etc.
 """
 
-# All of the imports sshould be listed here. Do NOT ever do 'from xyv import *' as this could lead to namespace conflicts.
-# If you import something from anothe module either use its full name - modulename.functionname - or else rename it -
+# All of the imports should be listed here. Do NOT ever do 'from xyv import *' as this could lead to namespace conflicts.
+# If you import something from another module either use its full name - modulename.functionname - or else rename it -
 # import ... as ...
 
 from utilities.read_from_file_and_net import get_file_from_net as get_url
