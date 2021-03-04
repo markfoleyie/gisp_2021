@@ -227,5 +227,5 @@ dmypy.json
 cython_debug/
 
 .idea/
-utilities/.temp
+utilities/.temp_data
 .temp_data
