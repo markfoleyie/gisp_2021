@@ -13,6 +13,7 @@ Mark Foley
 Feb 2021
 """
 
+import utilities.gdal_workaround
 import fiona
 import os
 import json
