@@ -17,7 +17,7 @@ import fiona
 import os
 import json
 from utilities.get_or_create_temporary_directory import get_temporary_directory as get_temp
-from utilities.get_zipfile_from_net_and_process import get_zip_from_server as get_zip
+from utilities.get_any_file_from_net import get_file_from_server as get_zip
 from utilities.reproject_point import reproject
 
 
@@ -89,7 +89,7 @@ def main():
           f"outputFormat=SHAPE-ZIP"
 
     my_zipfiles = get_zip(url, my_temp_directory)
-    for file in my_zipfiles:
+    for file in my_zipfiles[1]:
         if file[-4:] == ".shp":
             get_shp_details(os.path.join(my_temp_directory, file))
 

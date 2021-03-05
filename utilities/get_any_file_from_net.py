@@ -29,11 +29,6 @@ def get_file_from_server(url, return_directory):
                             response.headers["Content-Type"].split(";")]
             if content_type[0][0] not in valid_formats.values():
                 raise ValueError(f"Looks like an invalid content type: {response.headers['Content-Type']}")
-            # for val in valid_formats.values():
-            #     if val in response.headers["Content-Type"]:
-            #         break
-            #     else:
-            #         raise ValueError(f"Looks like an invalid content type: {response.headers['Content-Type']}")
             if content_type[0][0] == "application/zip":
                 my_zipfile = ZipFile(BytesIO(response.content))
                 my_zipfile.extractall(path=return_directory)
