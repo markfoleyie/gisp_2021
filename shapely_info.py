@@ -155,6 +155,8 @@ def read_shp(shapefile, filter1, filter2):
 
 
 if __name__ == "__main__":
+
+    # These are a bunch of inputs. You can accept defaults or change
     geoserver_target = {}
     geoserver_target["geoserver"] = \
         input(f"Input Geoserver URL or press ENTER for {DEFAULT_SHAPE_ZIP['geoserver']} ") or DEFAULT_SHAPE_ZIP[
@@ -168,10 +170,17 @@ if __name__ == "__main__":
     geoserver_target["filter2"] = \
         input(f"Input filter 2 or press ENTER for {DEFAULT_SHAPE_ZIP['filter2']} ") or DEFAULT_SHAPE_ZIP['filter2']
 
+    # Get or create temp directory for data
     my_temp_directory = get_temp(__file__)
+
+    # Construct URL. This is our source on geoserver.
     url = f"{geoserver_target['geoserver']}/{geoserver_target['workspace']}/ows?service=WFS&version=1.0.0&" \
           f"request=GetFeature&typeName={geoserver_target['workspace']}:{geoserver_target['dataset']}&" \
           f"outputFormat=SHAPE-ZIP"
+
+    # Get the zip file from Geoserver, extract its contents and store in temp directory.
     get_zip(url, my_temp_directory)
+
+    # Read shapefile, apply filters and analyse
     read_shp(f'{os.path.join(my_temp_directory, geoserver_target["dataset"])}.shp', filter1=geoserver_target["filter1"],
              filter2=geoserver_target["filter2"])
