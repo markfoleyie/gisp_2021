@@ -10,9 +10,21 @@ try:
     import shapely.geometry as geo
     import shapely
     from collections import OrderedDict
+    import os
+    from utilities.get_or_create_temporary_directory import get_temporary_directory as get_temp
+    from utilities.get_any_file_from_net import get_file_from_server as get_zip
 except ImportError as e:
     print("{}".format(e))
     quit(1)
+
+# We sset up some input efaults to save on typing. These can be changed at RUN TIME.
+DEFAULT_SHAPE_ZIP = {
+    "geoserver": "https://markfoley.info/geoserver",
+    "workspace": "census2011",
+    "dataset": "counties",
+    "filter1": "countyname:carlow",
+    "filter2": "countyname:kilkenny",
+}
 
 
 def geom_info(g1, g2=None):
@@ -89,16 +101,39 @@ def geom_info(g1, g2=None):
         quit(1)
 
 
-if __name__ == "__main__":
-    shp = ".temp_data/counties.shp"
+def read_shp(shapefile, filter1, filter2):
+    """
+    We read in a shapefile, the argument gives us a string with the FULL PATH to the required file.
+
+    :param shapefile: The file we're going to open
+    :param filter1: Filters in the format key:value where key is in the shapefile properties, e.g. countyname:carlow
+    :param filter2:
+    :return:
+    """
+    try:
+        filter1 = filter1.split(":")
+        filter1[1] = filter1[1].title()
+        filter2 = filter2.split(":")
+        filter2[1] = filter2[1].title()
+    except Exception as e:
+        print("f{e}")
+        quit(1)
+
     features = []
     with fiona.Env():
-        with fiona.open(shp, "r") as fh:
+        with fiona.open(shapefile, "r") as fh:
             for feature in fh:
-                if "Carlow" in feature["properties"]["countyname"] or \
-                        "Kilkenny" in feature["properties"]["countyname"]:
+                if filter1[1] in feature["properties"]["countyname"] or \
+                        filter2[1] in feature["properties"]["countyname"]:
                     features.append(feature)
 
+    print(f"Feature properties\n{'-' * 20}")
+    for feature in features:
+        for k, v in feature["properties"].items():
+            print(f"k: {k}, v: {v}")
+        print(f"{'-' * 20}")
+
+    # Do spatial analysis - comparison of the two features
     result = geom_info(features[0], features[1])
     print("g1 Info\n" + "-" * 20)
     for k, v in result[0].items():
@@ -117,3 +152,26 @@ if __name__ == "__main__":
             .format(
             tuple([i for i in result[2]["de9im"]])
         ))
+
+
+if __name__ == "__main__":
+    geoserver_target = {}
+    geoserver_target["geoserver"] = \
+        input(f"Input Geoserver URL or press ENTER for {DEFAULT_SHAPE_ZIP['geoserver']} ") or DEFAULT_SHAPE_ZIP[
+            'geoserver']
+    geoserver_target["workspace"] = \
+        input(f"Input Workspace or press ENTER for {DEFAULT_SHAPE_ZIP['workspace']} ") or DEFAULT_SHAPE_ZIP['workspace']
+    geoserver_target["dataset"] = \
+        input(f"Input Data Set or press ENTER for {DEFAULT_SHAPE_ZIP['dataset']} ") or DEFAULT_SHAPE_ZIP['dataset']
+    geoserver_target["filter1"] = \
+        input(f"Input filter 1 or press ENTER for {DEFAULT_SHAPE_ZIP['filter1']} ") or DEFAULT_SHAPE_ZIP['filter1']
+    geoserver_target["filter2"] = \
+        input(f"Input filter 2 or press ENTER for {DEFAULT_SHAPE_ZIP['filter2']} ") or DEFAULT_SHAPE_ZIP['filter2']
+
+    my_temp_directory = get_temp(__file__)
+    url = f"{geoserver_target['geoserver']}/{geoserver_target['workspace']}/ows?service=WFS&version=1.0.0&" \
+          f"request=GetFeature&typeName={geoserver_target['workspace']}:{geoserver_target['dataset']}&" \
+          f"outputFormat=SHAPE-ZIP"
+    get_zip(url, my_temp_directory)
+    read_shp(f'{os.path.join(my_temp_directory, geoserver_target["dataset"])}.shp', filter1=geoserver_target["filter1"],
+             filter2=geoserver_target["filter2"])
