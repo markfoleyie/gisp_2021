@@ -26,7 +26,6 @@ DEFAULT_SHAPE_ZIP = {
 def process_shp(shp, output_dir, region_key, region_value):
     region_features = []
 
-    output_crs = None
     output_schema = {
         "geometry": "",
         "properties": {
@@ -39,7 +38,6 @@ def process_shp(shp, output_dir, region_key, region_value):
         output_crs = source.crs
         output_driver = source.driver
         output_schema["geometry"] = source.schema["geometry"]
-        shp_epsg = source.crs['init'].split(':')[-1]
         for feature in source:
             if feature["properties"][region_key] == region_value:
                 region_features.append(feature)
