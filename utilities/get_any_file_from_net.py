@@ -5,7 +5,7 @@ import os
 from utilities.get_or_create_temporary_directory import get_temporary_directory as get_temp
 
 
-def get_file_from_server(url, return_directory):
+def get_file_from_server(url, return_directory, **kwargs):
     """
     This accepts a  a URL and (ii) retrieves a zipped shapefile from the URL.
 
@@ -39,6 +39,8 @@ def get_file_from_server(url, return_directory):
                 for item in content_type + content_disposition:
                     if len(item) == 2:
                         locals()[item[0]] = item[1]
+                if "filename" in kwargs:
+                    locals()["filename"] = kwargs["filename"]
                 if not locals()["filename"]:
                     raise ValueError("Got data but couldn't find a filename for it.")
                 with open(os.path.join(return_directory, locals()["filename"]),

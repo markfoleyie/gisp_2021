@@ -228,4 +228,7 @@ cython_debug/
 
 .idea/
 utilities/.temp_data
-.temp_data
+.temp_data/
+.ca2_temp/
+.cache/
+counties/

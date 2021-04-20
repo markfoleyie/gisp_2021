@@ -1,6 +1,6 @@
 import os
 
-def get_temporary_directory(file_of_calling_program):
+def get_temporary_directory(file_of_calling_program, dir_name):
     """
     Make sure that the temp directory, '.temp_data' exists and if not is created. This is created in the path of the
     calling program.
@@ -10,7 +10,7 @@ def get_temporary_directory(file_of_calling_program):
     """
 
     script_dir = os.path.dirname(file_of_calling_program)
-    cache_dir = os.path.join(script_dir, ".temp_data")
+    cache_dir = os.path.join(script_dir, dir_name)
     if not os.path.exists(cache_dir):
         os.mkdir(cache_dir)
 
