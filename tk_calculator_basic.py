@@ -177,7 +177,7 @@ def main():
     # Contain top level window usually called root
     root = Tk()
     # Create an instance of the class that defines the GUI and associate it with the top level window..
-    my_gui = MyGUI(root)
+    MyGUI(root)
     # Keep listening for events until destroy event occurs.
     root.mainloop()
 
