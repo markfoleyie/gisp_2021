@@ -232,3 +232,5 @@ utilities/.temp_data
 .ca2_temp/
 .cache/
 counties/
+.old_stuff/
+.cache2/

@@ -1,6 +1,6 @@
 import os
 
-def get_temporary_directory(file_of_calling_program, dir_name):
+def get_temporary_directory(file_of_calling_program, dir_name=".cache"):
     """
     Make sure that the temp directory, '.temp_data' exists and if not is created. This is created in the path of the
     calling program.
