@@ -42,6 +42,8 @@ from tkinter import messagebox
 from tkinter import TclError
 from tkinter import scrolledtext as st
 
+from datetime import datetime
+
 # Don't forget to look in 'utilities' for useful functions that I have given you. If you add these files to your project
 # you can import them.
 
@@ -69,7 +71,9 @@ def do_analysis(**defaults):
     # Make result log to be printed at the end. Information will be added to this as we proceed.
     result_log = ""
 
+    # ==================
     # Do analysis here.
+    # ==================
 
     # Get data from Geoerver. Note that we use the same SRS for both and the we filter based on required polygons and
     # points with population greater than a specified amount. Take note of 'download_from_geoserver' in 'utilities'.
@@ -129,17 +133,17 @@ class GUI:
         The design of your GUI is created here.
 
         :param parent: a 'tk' object usually called root in the main function.
-        :param defaults: a set of sensible defaults used to populate adat entry widgets - this saves a lot of typing!
+        :param defaults: a set of sensible defaults used to populate data entry widgets - this saves a lot of typing!
         """
 
         # the tk object
         self.parent = parent
 
-        # Create a bunch of 'StringVar' elements which can be monitered by Entry widgets. These are populated by
+        # Create a bunch of 'StringVar' elements which can be monitored by Entry widgets. These are populated by
         # defaults.
         try:
             self.defaults = {}
-            for k, v in DEFAULTS.items():
+            for k, v in defaults.items():
                 self.defaults[k.lower()] = tk.StringVar()
                 self.defaults[k.lower()].set(v)
         except Exception as e:
@@ -171,7 +175,7 @@ class GUI:
     def run_analysis(self):
         """
         This is the method that is fired when the 'RUN' button is pressed. All it needs to do is call the 'do_analysis'
-        function and wiite any results to the scrolledtext widget.
+        function and write any results to the 'scrolledtext' widget.
 
         :return: None
         """
@@ -181,18 +185,27 @@ class GUI:
         # 'self.text1'. As this doesn't exist yet, I've commented out the example to avoid errors. This just goes
         # through the defaults and adds some text about each one to the widget.
         #
-        # Note 'tk.END' means the end-point of any existing text in the widget. It's a bit like placig the cusror at the
-        # end of a text document in Notepad and adding from there.
+        # Note 'tk.END' means the end-point of any existing text in the widget. It's a bit like placing the cursor at
+        # the end of a text document in Notepad and adding from there.
 
-        # self.text1.insert(tk.END, f"{'-' * 60}\n")
-        # for k in self.defaults:
-        #     DEFAULTS[k.upper()] = self.defaults[k].get()
-        #     self.text1.insert(tk.END, f"{k}: {self.defaults[k].get()}\n")
+        self.text1.insert(tk.END, f"{'-' * 60}\n")
+        plain_defaults = {}
+        for k in self.defaults:
+            plain_defaults[k.upper()] = self.defaults[k].get()
+            self.text1.insert(tk.END, f"{k}: {self.defaults[k].get()}\n")
+
+        self.text1.insert(tk.END, f"{datetime.now().isoformat()}: Starting analysis...\n")
 
         # Do actual spatial analysis
-        result = do_analysis(**self.defaults)
+        result = do_analysis(**plain_defaults)
 
         # Write results to scrolledtext widget
+        self.text1.insert(tk.END, f"{datetime.now().isoformat()}: Analysis completed...\n")
+        self.text1.insert(tk.END, result)
+        self.text1.insert(tk.END, f"{'-' * 60}\n")
+        self.text1.insert(tk.END, f"{'-' * 60}\n")
+        for k in self.defaults:
+            self.text1.insert(tk.END, f"{k}: {self.defaults[k].get()}\n")
 
 
 if __name__ == "__main__":
